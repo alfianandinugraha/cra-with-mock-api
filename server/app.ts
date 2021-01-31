@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import { create, defaults, router } from 'json-server'
 import path from 'path'
 
+const cors = require('cors')
 const app = create()
 const routes = router(path.join(__dirname, 'db', 'root.json'))
 const middlewares = defaults()
@@ -16,6 +17,9 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     "message": "UNAUTHORIZED. you need authorization header, you can add it with postman (https://www.postman.com/downloads/)"
   })
 }
+
+app.use(cors())
+app.options('*', cors())
 
 app.get('/', (req, res, next) => {
   res.json('server was running')
